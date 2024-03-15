@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import AuthForm from './components/AuthForm';
+import VehicleList from './components/VehicleList';
+import VehicleDetail from './components/VehicleDetail';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleVehicleClick = (vehicle) => {
+    setSelectedVehicle(vehicle);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {!isAuthenticated && <AuthForm onLogin={handleLogin} />}
+      {isAuthenticated && (
+        <>
+          <VehicleList onVehicleClick={handleVehicleClick} />
+          {selectedVehicle && <VehicleDetail vehicle={selectedVehicle} />}
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
